@@ -21,12 +21,28 @@
           'display'
         );
 
+        var svg = document.getElementsByTagName("svg")[0];
+        var bbox = svg.getBBox();
+        // bbox.width = bbox.width * 1.5;
+        // bbox.height = bbox.height * 1.5;
+        if (width) {
+          bbox.width = width;
+        }
+        if (height) {
+          bbox.height = height;
+        }
+        svg.setAttribute("width", bbox.x + bbox.width  + "px");
+        svg.setAttribute("height",bbox.y + bbox.height + "px");
+        // svg.setAttribute("viewBox","0 0 " + (bbox.x + bbox.width) + " " + (bbox.y + bbox.height) + "");
+
         return new XMLSerializer().serializeToString(canvas);
       }
     </script>
   </head>
 
   <body>
-    <div class="wave" id="display0"></div>
+    <div class="wave">
+      <div id="display0"></div>
+    </div>
   </body>
 </html>

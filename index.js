@@ -18,7 +18,6 @@ function processBlock(blk) {
         ph.createPage().then(function(page) {
             var pagePath = path.join(__dirname, 'renderer.html');
             page.open(pagePath).then(function(status) {
-                console.log(code);
                 var result = page.evaluate(function(code, config, width, height) {
                     return render(code, config, width, height);
                 }, code, config, width, height);

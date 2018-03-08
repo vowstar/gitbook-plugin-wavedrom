@@ -37,8 +37,7 @@ book.json add the wavedrom options
 ```
 "pluginsConfig": {
   "wavedrom": {
-    "width" : 600,
-    "height" : 300
+
   }
 }
 ```
