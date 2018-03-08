@@ -14,7 +14,8 @@
   "description": "WaveDrom plugin for GitBook",
   "devDependencies": {
     "gitbook-tester": "^1.4.3",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "is-svg": "^3.0.0"
   },
   "directories": {},
   "engines": {
@@ -47,5 +48,5 @@
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec --timeout 15000"
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

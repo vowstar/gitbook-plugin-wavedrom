@@ -16,9 +16,13 @@ describe('wavedrom', function() {
             })
             .create()
             .then(function(result) {
-                var crypto = require('crypto');
-                var digest = crypto.createHash('sha256').update(result[0].content).digest('hex');
-                assert.equal(digest, '931aeace87840a7738ab02b8682d2ebe63500fe97f38fdc73b0999a688f61c97');
+                const isSvg = require('is-svg');
+                const svg = result[0].content.substring(
+                    result[0].content.indexOf('<svg'),
+                    result[0].content.indexOf('</div></p>'));
+                assert.equal(isSvg(svg), true);
+                assert.equal(svg.includes('path'), true);
+                assert.equal(svg.includes('clk'), true);
             });
     });
     it('should correctly replace by {% wavedrom %} and endwavedrom {% endwavedrom %} tag', function() {
@@ -32,9 +36,13 @@ describe('wavedrom', function() {
             })
             .create()
             .then(function(result) {
-                var crypto = require('crypto');
-                var digest = crypto.createHash('sha256').update(result[0].content).digest('hex');
-                assert.equal(digest, '931aeace87840a7738ab02b8682d2ebe63500fe97f38fdc73b0999a688f61c97');
+                const isSvg = require('is-svg');
+                const svg = result[0].content.substring(
+                    result[0].content.indexOf('<svg'),
+                    result[0].content.indexOf('</div></p>'));
+                assert.equal(isSvg(svg), true);
+                assert.equal(svg.includes('path'), true);
+                assert.equal(svg.includes('clk'), true);
             });
     });
 });
