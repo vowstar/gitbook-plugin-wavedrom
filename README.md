@@ -23,7 +23,7 @@ book.json add the plugin
 ## Features
 
 * Support HTML, PDF, EPUB output(make sure your gitbook support SVG)
-* Support ```flow code block quote
+* Support ```wavedrom code block quote
 * Multi code style support
 
 ### Beautiful Waveform
@@ -86,7 +86,7 @@ Also you can put in your book block as
 Template mode:
 
 ```
-{% chart width="800px" height="800px" %}
+{% wavedrom width="800px" height="800px" %}
 ```
 
 > If use both configure method, the code configure will overwrite the template configure.
