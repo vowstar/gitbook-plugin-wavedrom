@@ -26,9 +26,9 @@ book.json add the plugin
 * Support ```flow code block quote
 * Multi code style support
 
-### Beautiful Chat
+### Beautiful Waveform
 
-![Beautiful Waveform](images/wavedrom.svg)
+![Beautiful Waveform](images/wavedrom.png)
 
 ## Configuration
 
@@ -97,6 +97,6 @@ Template mode:
 
 ### Thanks
 
-@ly0
-@0x00-pl
-@manageryzy
+- [@ly0](https://github.com/ly0)
+- [@0x00-pl](https://github.com/0x00-pl)
+- [@manageryzy](https://github.com/manageryzy)
