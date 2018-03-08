@@ -44,6 +44,8 @@
     "type": "git",
     "url": "git+https://github.com/vowstar/gitbook-plugin-wavedrom.git"
   },
-  "scripts": {},
-  "version": "1.0.0"
+  "scripts": {
+    "test": "node_modules/.bin/mocha --reporter spec --timeout 15000"
+  },
+  "version": "1.0.1"
 }
