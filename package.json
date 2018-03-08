@@ -12,7 +12,10 @@
     "wavedrom": "^1.6.3"
   },
   "description": "WaveDrom plugin for GitBook",
-  "devDependencies": {},
+  "devDependencies": {
+    "gitbook-tester": "^1.4.3",
+    "mocha": "^3.5.0"
+  },
   "directories": {},
   "engines": {
     "gitbook": ">=3.0.0"
@@ -42,5 +45,5 @@
     "url": "git+https://github.com/vowstar/gitbook-plugin-wavedrom.git"
   },
   "scripts": {},
-  "version": "0.0.1"
+  "version": "1.0.0"
 }
