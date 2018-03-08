@@ -1,0 +1,46 @@
+{
+  "author": {
+    "name": "Huang Rui"
+  },
+  "bugs": {
+    "url": "https://github.com/vowstar/gitbook-plugin-wavedrom/issues"
+  },
+  "dependencies": {
+    "phantom": "^2.0.0",
+    "q": "^1.4.1",
+    "fs-extra": "^0.30.0",
+    "wavedrom": "^1.6.3"
+  },
+  "description": "WaveDrom plugin for GitBook",
+  "devDependencies": {},
+  "directories": {},
+  "engines": {
+    "gitbook": ">=3.0.0"
+  },
+  "homepage": "https://github.com/vowstar/gitbook-plugin-wavedrom",
+  "keywords": [
+    "waveform",
+    "rtl",
+    "verilog",
+    "vhdl",
+    "chisel",
+    "plugin",
+    "gitbook"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "vowstar@gmail.com",
+      "name": "Huang Rui"
+    }
+  ],
+  "name": "gitbook-plugin-wavedrom",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vowstar/gitbook-plugin-wavedrom.git"
+  },
+  "scripts": {},
+  "version": "0.0.1"
+}
