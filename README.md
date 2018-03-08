@@ -28,7 +28,7 @@ book.json add the plugin
 
 ### Beautiful Waveform
 
-![Beautiful Waveform](images/wavedrom.png)
+![Beautiful Waveform](images/wavedrom.svg)
 
 ## Configuration
 
