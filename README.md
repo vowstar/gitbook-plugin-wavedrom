@@ -28,9 +28,6 @@ book.json add the plugin
 
 ### Beautiful Waveform
 
-[^_^]:
-    ![Beautiful Waveform](images/wavedrom.svg)
-
 ![Beautiful Waveform](https://raw.github.com/vowstar/gitbook-plugin-wavedrom/master/images/wavedrom.svg?sanitize=true)
 
 ## Configuration
