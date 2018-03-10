@@ -48,5 +48,5 @@
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec --timeout 15000"
   },
-  "version": "1.0.5"
+  "version": "1.0.6"
 }
