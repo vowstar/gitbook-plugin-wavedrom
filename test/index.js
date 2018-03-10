@@ -5,8 +5,8 @@ var assert = require('assert');
 var pkg = require('../package.json');
 
 describe('wavedrom', function() {
+    this.timeout(50000);
     it('should correctly replace by ```wavedrom``` tag', function() {
-        this.timeout(50000);
         return tester.builder()
             .withContent('\n```wavedrom\n{ signal : [{ name: "clk",  wave: "p." }]} \n```')
             .withLocalPlugin(path.join(__dirname, '..'))
@@ -18,14 +18,13 @@ describe('wavedrom', function() {
             .then(function(result) {
                 const isSvg = require('is-svg');
                 const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
-                
+
                 assert.equal(isSvg(svg), true);
                 assert.equal(svg.includes('path'), true);
                 assert.equal(svg.includes('clk'), true);
             });
     });
     it('should correctly replace by {% wavedrom %} and endwavedrom {% endwavedrom %} tag', function() {
-        this.timeout(50000);
         return tester.builder()
             .withContent('\n{% wavedrom %}\n{ signal : [{ name: "clk",  wave: "p." }]} \n{% endwavedrom %}')
             .withLocalPlugin(path.join(__dirname, '..'))
@@ -37,7 +36,7 @@ describe('wavedrom', function() {
             .then(function(result) {
                 const isSvg = require('is-svg');
                 const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
-                
+
                 assert.equal(isSvg(svg), true);
                 assert.equal(svg.includes('path'), true);
                 assert.equal(svg.includes('clk'), true);

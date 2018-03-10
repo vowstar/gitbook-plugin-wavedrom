@@ -39,7 +39,7 @@ module.exports = {
     hooks: {
         // For all the hooks, this represent the current generator
         // [init", "finish", "finish:before", "page", "page:before"] are working.
-        // page:* are marked as deprecated because it's better if plugins start using blocks instead. 
+        // page:* are marked as deprecated because it's better if plugins start using blocks instead.
         // But page and page:before will probably stay at the end (useful in some cases).
 
         // This is called before the book is generated
@@ -57,14 +57,17 @@ module.exports = {
         // Before parsing markdown
         "page:before": function(page) {
             // Get all code texts
-            flows = page.content.match(/^```wavedrom((.*\n)+?)?```$/igm);
+            flows = page.content.match(/```(wavedrom)((.*[\r\n]+)+?)?```/igm);
             // Begin replace
             if (flows instanceof Array) {
                 for (var i = 0, len = flows.length; i < len; i++) {
                     page.content = page.content.replace(
                         flows[i],
-                        flows[i].replace(/```(wavedrom)\s+{(.*)}/,
+                        flows[i]
+                        .replace(/```(wavedrom)[ \t]+{(.*)}/i,
                             function(match, p1, p2) {
+                                if (!match || !p1 || !p2)
+                                    return "";
                                 var newStr = "";
                                 var modeQuote = false;
                                 var modeArray = false;
@@ -115,8 +118,9 @@ module.exports = {
 
                                 return "{% wavedrom " + newStr + " %}";
                             })
-                        .replace(/^```wavedrom/, '{% wavedrom %}')
-                        .replace(/```$/, '{% endwavedrom %}'));
+                        .replace(/```(wavedrom)/i, '{% wavedrom %}')
+                        .replace(/```/, '{% endwavedrom %}')
+                    );
                 }
             }
             return page;
