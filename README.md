@@ -53,7 +53,6 @@ To include a wavedrom waveform, just wrap your definition in a "wavedrom" code b
   { name: "Pclk", wave: 'P.......' },
   { name: "nclk", wave: 'n.......' },
   { name: "Nclk", wave: 'N.......' },
-  {},
   { name: 'clk0', wave: 'phnlPHNL' },
   { name: 'clk1', wave: 'xhlhLHl.' },
   { name: 'clk2', wave: 'hpHplnLn' },
@@ -72,6 +71,24 @@ Also you can put in your book block as
   { name: "Pclk", wave: 'P.......' },
   { name: "nclk", wave: 'n.......' },
   { name: "Nclk", wave: 'N.......' },
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
+]}
+{% endwavedrom %}
+```
+
+Set width and height parameter:
+
+```
+{% wavedrom width=800, height=800 %}
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
   {},
   { name: 'clk0', wave: 'phnlPHNL' },
   { name: 'clk1', wave: 'xhlhLHl.' },
@@ -82,11 +99,40 @@ Also you can put in your book block as
 {% endwavedrom %}
 ```
 
-Template mode:
+Of course, you can also pass the parameters like this.
 
+<pre><code>```wavedrom {width=600 height=1000}
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
+  {},
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
+]}
 ```
-{% wavedrom width="800px" height="800px" %}
+
+Or like this.
+
+<pre><code>```wavedrom {width=600,height=1000}
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
+  {},
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
+]}
 ```
+</code></pre>
 
 > If use both configure method, the code configure will overwrite the template configure.
 

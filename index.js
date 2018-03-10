@@ -63,7 +63,60 @@ module.exports = {
                 for (var i = 0, len = flows.length; i < len; i++) {
                     page.content = page.content.replace(
                         flows[i],
-                        flows[i].replace(/^```wavedrom/, '{% wavedrom %}').replace(/```$/, '{% endwavedrom %}'));
+                        flows[i].replace(/```(wavedrom)\s+{(.*)}/,
+                            function(match, p1, p2) {
+                                var newStr = "";
+                                var modeQuote = false;
+                                var modeArray = false;
+                                var modeChar = false;
+                                var modeEqual = false;
+                                // Trim left and right space
+                                var str = p2.replace(/^\s+|\s+$/g,"");
+
+                                // Build new str
+                                for(var i = 0; i < str.length; i++){
+                                    if (str.charAt(i) == "\"") {
+                                        modeQuote = !modeQuote;
+                                        modeChar = true;
+                                        newStr += str.charAt(i);
+                                        continue;
+                                    }
+                                    if (str.charAt(i) == "[") {
+                                        modeArray = true;
+                                        newStr += str.charAt(i);
+                                        continue;
+                                    }
+                                    if (str.charAt(i) == "]") {
+                                        modeArray = false;
+                                        newStr += str.charAt(i);
+                                        continue;
+                                    }
+                                    if (modeQuote || modeArray) {
+                                        // In quote, keep all string
+                                        newStr += str.charAt(i);
+                                    } else {
+                                        // Out of quote, process it
+                                        if (str.charAt(i).match(/[A-Za-z0-9_]/)) {
+                                            modeChar = true;
+                                            newStr += str.charAt(i);
+                                        } else if (str.charAt(i).match(/[=]/)) {
+                                            modeEqual = true;
+                                            modeChar = false;
+                                            newStr += str.charAt(i);
+                                        } else if (modeChar && modeEqual) {
+                                            modeChar = false;
+                                            modeEqual = false;
+                                            newStr += ",";
+                                        }
+                                    }
+                                }
+
+                                newStr = newStr.replace(/,$/,"");
+
+                                return "{% wavedrom " + newStr + " %}";
+                            })
+                        .replace(/^```wavedrom/, '{% wavedrom %}')
+                        .replace(/```$/, '{% endwavedrom %}'));
                 }
             }
             return page;

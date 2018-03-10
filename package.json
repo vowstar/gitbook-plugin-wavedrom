@@ -6,10 +6,9 @@
     "url": "https://github.com/vowstar/gitbook-plugin-wavedrom/issues"
   },
   "dependencies": {
-    "phantom": "^2.0.0",
-    "q": "^1.4.1",
     "fs-extra": "^0.30.0",
-    "wavedrom": "^1.6.3"
+    "phantom": "^2.0.0",
+    "q": "^1.4.1"
   },
   "description": "WaveDrom plugin for GitBook",
   "devDependencies": {
@@ -48,5 +47,5 @@
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec --timeout 15000"
   },
-  "version": "1.0.6"
+  "version": "1.1.0"
 }
