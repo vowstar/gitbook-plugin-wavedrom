@@ -17,9 +17,8 @@ describe('wavedrom', function() {
             .create()
             .then(function(result) {
                 const isSvg = require('is-svg');
-                const svg = result[0].content.substring(
-                    result[0].content.indexOf('<svg'),
-                    result[0].content.indexOf('</div></p>'));
+                const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
+                
                 assert.equal(isSvg(svg), true);
                 assert.equal(svg.includes('path'), true);
                 assert.equal(svg.includes('clk'), true);
@@ -37,9 +36,8 @@ describe('wavedrom', function() {
             .create()
             .then(function(result) {
                 const isSvg = require('is-svg');
-                const svg = result[0].content.substring(
-                    result[0].content.indexOf('<svg'),
-                    result[0].content.indexOf('</div></p>'));
+                const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
+                
                 assert.equal(isSvg(svg), true);
                 assert.equal(svg.includes('path'), true);
                 assert.equal(svg.includes('clk'), true);
