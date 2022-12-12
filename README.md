@@ -28,7 +28,7 @@ book.json add the plugin
 ## Features
 
 * Support HTML, PDF, EPUB output(make sure your gitbook support SVG)
-* Support ```wavedrom code block quote
+* Support `` ```wavedrom `` code block quote
 * Multi code style support
 
 ### Beautiful Waveform
