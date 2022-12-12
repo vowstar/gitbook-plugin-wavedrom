@@ -1,20 +1,25 @@
 # gitbook-plugin-wavedrom
 
+[![Build Status](https://github.com/vowstar/gitbook-plugin-wavedrom/actions/workflows/test.yml/badge.svg)](https://github.com/vowstar/gitbook-plugin-wavedrom/actions)
+[![Coverage Status](https://coveralls.io/repos/github/vowstar/gitbook-plugin-wavedrom/badge.svg?branch=master)](https://coveralls.io/github/vowstar/gitbook-plugin-wavedrom?branch=master)
 [![NPM Version](https://img.shields.io/npm/v/gitbook-plugin-wavedrom.svg?style=flat)](https://www.npmjs.org/package/gitbook-plugin-wavedrom)
-[![Build Status](https://img.shields.io/travis/vowstar/gitbook-plugin-wavedrom/master.svg?style=flat)](https://travis-ci.org/vowstar/gitbook-plugin-wavedrom)
 [![NPM Downloads](https://img.shields.io/npm/dm/gitbook-plugin-wavedrom.svg?style=flat)](https://www.npmjs.org/package/gitbook-plugin-wavedrom)
 
-[WaveDrom](http://wavedrom.com/tutorial.html) Plugin for [GitBook](https://github.com/GitbookIO/gitbook)
+[WaveDrom](http://wavedrom.com/tutorial.html) Plugin for [~~GitBook~~](https://github.com/GitbookIO/gitbook) [Honkit](https://github.com/honkit/honkit)
+
+This is a sample plugin for ~~GitBook~~ Honkit and is specially adapted for ~~GitBook~~ Honkit from [WaveDrom](http://wavedrom.com/tutorial.htm). ~~Gitbook~~ Honkit WaveDrom plugin is used to select from ``WaveDrom`` and converting it into a picture.
 
 WaveDrom is a JavaScript application. WaveJSON is a format that describes Digital Timing Diagrams. WaveDrom renders the diagrams directly inside the browser. Element "signal" is an array of WaveLanes. Each WaveLane has two mandatory fields: "name" and "wave".
 
 ## Installation
 
-    $ npm install gitbook-plugin-wavedrom
+```bash
+npm install gitbook-plugin-wavedrom
+```
 
 book.json add the plugin
 
-```
+```bash
 {
   "plugins": ["wavedrom"]
 }
@@ -34,7 +39,7 @@ book.json add the plugin
 
 book.json add the wavedrom options
 
-```
+```js
 "pluginsConfig": {
   "wavedrom": {
 
@@ -43,7 +48,6 @@ book.json add the wavedrom options
 ```
 
 ## Usage
-
 
 To include a wavedrom waveform, just wrap your definition in a "wavedrom" code block. For example:
 
@@ -64,7 +68,7 @@ To include a wavedrom waveform, just wrap your definition in a "wavedrom" code b
 
 Also you can put in your book block as
 
-```
+```js
 {% wavedrom %}
 { signal: [
   { name: "pclk", wave: 'p.......' },
@@ -82,7 +86,7 @@ Also you can put in your book block as
 
 Set width and height parameter:
 
-```
+```js
 {% wavedrom width=800, height=800 %}
 { signal: [
   { name: "pclk", wave: 'p.......' },
@@ -125,6 +129,6 @@ Of course, you can also pass the parameters like this.
 
 ### Thanks
 
-- [@ly0](https://github.com/ly0)
-- [@0x00-pl](https://github.com/0x00-pl)
-- [@manageryzy](https://github.com/manageryzy)
+* [@ly0](https://github.com/ly0)
+* [@0x00-pl](https://github.com/0x00-pl)
+* [@manageryzy](https://github.com/manageryzy)
