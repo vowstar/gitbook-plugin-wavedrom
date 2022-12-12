@@ -4,7 +4,7 @@ var path = require('path');
 var puppeteer = require('puppeteer');
 var Q = require('q');
 
-var fs = require('fs-extra');
+var fs = require('fs');
 
 function processBlock(blk) {
     var deferred = Q.defer();
