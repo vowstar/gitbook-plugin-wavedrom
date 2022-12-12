@@ -1,8 +1,10 @@
+/*jshint esversion: 8 */
+
 var path = require('path');
-var phantom = require('phantom');
+var puppeteer = require('puppeteer');
 var Q = require('q');
 
-var fs = require('fs-extra')
+var fs = require('fs-extra');
 
 function processBlock(blk) {
     var deferred = Q.defer();
@@ -11,21 +13,42 @@ function processBlock(blk) {
     var code = blk.body;
     var config = book.config.get('pluginsConfig.wavedrom', {});
 
-    var width = blk.kwargs['width'];
-    var height = blk.kwargs['height'];
+    var width = blk.kwargs.width;
+    var height = blk.kwargs.height;
 
-    phantom.create().then(function(ph) {
-        ph.createPage().then(function(page) {
-            var pagePath = path.join(__dirname, 'renderer.html');
-            page.open(pagePath).then(function(status) {
-                var result = page.evaluate(function(code, config, width, height) {
-                    return render(code, config, width, height);
-                }, code, config, width, height);
-                ph.exit();
-                deferred.resolve(result);
-            });
+    (async (code, config, width, height) => {
+        const browser = await puppeteer.launch({
+            args: ['--disable-dev-shm-usage', '--no-sandbox', '--allow-file-access-from-files', '--enable-local-file-accesses']
         });
-    });
+        const page = await browser.newPage();
+
+        const htmlFile = path.join(__dirname, 'renderer.html');
+        await page.goto("file://" + htmlFile, { waitUntil: 'networkidle2'});
+
+        xCode=encodeURIComponent(code);
+        xConfig=encodeURIComponent(config);
+        xWidth=encodeURIComponent(width);
+        xHeight=encodeURIComponent(height);
+
+        /* istanbul ignore next */
+        var result = await page.evaluate(
+            `(async() => {
+                code = decodeURIComponent("${xCode}");
+                config = decodeURIComponent("${xConfig}");
+                width = decodeURIComponent("${xWidth}");
+                height = decodeURIComponent("${xHeight}");
+                return render(code, config, width, height);
+             })()`
+        );
+
+        await browser.close();
+
+        return result;
+    })(code, config, width, height).then(
+        function(result){
+            deferred.resolve(result);
+        }
+    );
 
     return deferred.promise;
 }
@@ -64,9 +87,9 @@ module.exports = {
                     page.content = page.content.replace(
                         flows[i],
                         flows[i]
-                        .replace(/```(wavedrom)[ \t]+{(.*)}/i,
-                            function(match, p1, p2) {
-                                if (!match || !p1 || !p2)
+                        .replace(/```(\x20|\t)*(wavedrom)[ \t]+{(.*)}/i,
+                            function(matchedStr) {
+                                if (!matchedStr)
                                     return "";
                                 var newStr = "";
                                 var modeQuote = false;
@@ -74,7 +97,9 @@ module.exports = {
                                 var modeChar = false;
                                 var modeEqual = false;
                                 // Trim left and right space
-                                var str = p2.replace(/^\s+|\s+$/g,"");
+                                var str = matchedStr.replace(/^\s+|\s+$/g,"");
+                                // Remove ```wavedrom header
+                                str = str.replace(/```(\x20|\t)*(wavedrom)/i, "");
 
                                 // Build new str
                                 for(var i = 0; i < str.length; i++){
@@ -118,7 +143,7 @@ module.exports = {
 
                                 return "{% wavedrom " + newStr + " %}";
                             })
-                        .replace(/```(wavedrom)/i, '{% wavedrom %}')
+                        .replace(/```(\x20|\t)*(wavedrom)/i, '{% wavedrom %}')
                         .replace(/```/, '{% endwavedrom %}')
                     );
                 }

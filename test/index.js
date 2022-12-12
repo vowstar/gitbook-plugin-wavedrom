@@ -1,5 +1,7 @@
+/*jshint esversion: 8 */
+
 var path = require('path');
-var tester = require('gitbook-tester');
+var tester = require('honkit-tester');
 var assert = require('assert');
 
 var pkg = require('../package.json');

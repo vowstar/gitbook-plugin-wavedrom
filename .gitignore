@@ -1,3 +1,5 @@
 node_modules/
-package-lock.json
-
+assets/
+coverage/
+.nyc_output/
+.tester.log
