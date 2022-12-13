@@ -49,8 +49,8 @@
   },
   "scripts": {
     "lint": "jshint *.js test/**.js scripts/**.js",
-    "prepublish": "node scripts/get-wavedrom.js",
-    "postinstall": "node scripts/get-wavedrom.js",
+    "prepublish": "node scripts/get-assets.js",
+    "postinstall": "node scripts/get-assets.js",
     "pretest": "npm run lint",
     "test": "nyc --reporter=lcov mocha --reporter spec --timeout 20000",
     "coverage": "cat ./coverage/lcov.info | coveralls"
