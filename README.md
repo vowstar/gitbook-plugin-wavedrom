@@ -123,12 +123,20 @@ Of course, you can also pass the parameters like this.
 
 > If use both configure method, the code configure will overwrite the template configure.
 
-### Learn WaveDrom and more information
+## Learn WaveDrom and more information
 
 [WaveDrom](http://wavedrom.com/tutorial.html)
 
-### Thanks
+## Thanks
 
 * [@ly0](https://github.com/ly0)
 * [@0x00-pl](https://github.com/0x00-pl)
 * [@manageryzy](https://github.com/manageryzy)
+
+## See also
+
+These plugins are also available on honkit.
+
+|                               Plugin                                |                      Description                       |
+| ------------------------------------------------------------------- | ------------------------------------------------------ |
+| [gitbook-plugin-uml](https://github.com/vowstar/gitbook-plugin-uml) | A plug-in that use plantuml to draw beautiful pictures |
