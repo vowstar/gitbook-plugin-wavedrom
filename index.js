@@ -26,7 +26,7 @@ function processBlock(blk) {
         await page.goto("file://" + htmlFile, { waitUntil: 'networkidle2'});
 
         xCode=encodeURIComponent(code);
-        xConfig=encodeURIComponent(config);
+        xConfig=encodeURIComponent(JSON.stringify(config));
         xWidth=encodeURIComponent(width);
         xHeight=encodeURIComponent(height);
 
@@ -34,7 +34,7 @@ function processBlock(blk) {
         var result = await page.evaluate(
             `(async() => {
                 code = decodeURIComponent("${xCode}");
-                config = decodeURIComponent("${xConfig}");
+                config = JSON.parse(decodeURIComponent("${xConfig}"));
                 width = decodeURIComponent("${xWidth}");
                 height = decodeURIComponent("${xHeight}");
                 return render(code, config, width, height);
