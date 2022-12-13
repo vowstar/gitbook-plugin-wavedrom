@@ -1,5 +1,4 @@
 node_modules/
-assets/
 coverage/
 .nyc_output/
 .tester.log
