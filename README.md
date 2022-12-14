@@ -17,7 +17,7 @@ WaveDrom is a JavaScript application. WaveJSON is a format that describes Digita
 npm install gitbook-plugin-wavedrom
 ```
 
-book.json add the plugin
+Add this plugin into ``book.json``.
 
 ```bash
 {
