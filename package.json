@@ -6,7 +6,7 @@
     "url": "https://github.com/vowstar/gitbook-plugin-wavedrom/issues"
   },
   "dependencies": {
-    "puppeteer": "^19.x",
+    "puppeteer": "^23.x",
     "q": "^1.x"
   },
   "description": "WaveDrom plugin for GitBook and Honkit",
