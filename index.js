@@ -1,56 +1,54 @@
 /*jshint esversion: 8 */
 
-var path = require('path');
-var puppeteer = require('puppeteer');
-var Q = require('q');
+const path = require('path');
+const puppeteer = require('puppeteer');
+const fs = require('fs');
 
-var fs = require('fs');
+async function processBlock(blk) {
+    const book = this;
+    const code = blk.body;
+    const config = book.config.get('pluginsConfig.wavedrom', {});
 
-function processBlock(blk) {
-    var deferred = Q.defer();
+    const width = blk.kwargs.width;
+    const height = blk.kwargs.height;
 
-    var book = this;
-    var code = blk.body;
-    var config = book.config.get('pluginsConfig.wavedrom', {});
+    return new Promise(async (resolve, reject) => {
+        try {
+            const browser = await puppeteer.launch({
+                args: [
+                    '--disable-dev-shm-usage',
+                    '--no-sandbox',
+                    '--allow-file-access-from-files',
+                    '--enable-local-file-accesses'
+                ]
+            });
+            const page = await browser.newPage();
 
-    var width = blk.kwargs.width;
-    var height = blk.kwargs.height;
+            const htmlFile = path.join(__dirname, 'renderer.html');
+            await page.goto("file://" + htmlFile, { waitUntil: 'networkidle2' });
 
-    (async (code, config, width, height) => {
-        const browser = await puppeteer.launch({
-            args: ['--disable-dev-shm-usage', '--no-sandbox', '--allow-file-access-from-files', '--enable-local-file-accesses']
-        });
-        const page = await browser.newPage();
+            const xCode = encodeURIComponent(code);
+            const xConfig = encodeURIComponent(JSON.stringify(config));
+            const xWidth = encodeURIComponent(width);
+            const xHeight = encodeURIComponent(height);
 
-        const htmlFile = path.join(__dirname, 'renderer.html');
-        await page.goto("file://" + htmlFile, { waitUntil: 'networkidle2'});
+            /* istanbul ignore next */
+            const result = await page.evaluate(
+                `(async () => {
+                    const code = decodeURIComponent("${xCode}");
+                    const config = JSON.parse(decodeURIComponent("${xConfig}"));
+                    const width = decodeURIComponent("${xWidth}");
+                    const height = decodeURIComponent("${xHeight}");
+                    return await render(code, config, width, height);
+                })()`
+            );
 
-        xCode=encodeURIComponent(code);
-        xConfig=encodeURIComponent(JSON.stringify(config));
-        xWidth=encodeURIComponent(width);
-        xHeight=encodeURIComponent(height);
-
-        /* istanbul ignore next */
-        var result = await page.evaluate(
-            `(async() => {
-                code = decodeURIComponent("${xCode}");
-                config = JSON.parse(decodeURIComponent("${xConfig}"));
-                width = decodeURIComponent("${xWidth}");
-                height = decodeURIComponent("${xHeight}");
-                return await render(code, config, width, height);
-             })()`
-        );
-
-        await browser.close();
-
-        return result;
-    })(code, config, width, height).then(
-        function(result){
-            deferred.resolve(result);
+            await browser.close();
+            resolve(result);
+        } catch (error) {
+            reject(error);
         }
-    );
-
-    return deferred.promise;
+    });
 }
 
 module.exports = {
@@ -60,70 +58,49 @@ module.exports = {
         }
     },
     hooks: {
-        // For all the hooks, this represent the current generator
-        // [init", "finish", "finish:before", "page", "page:before"] are working.
-        // page:* are marked as deprecated because it's better if plugins start using blocks instead.
-        // But page and page:before will probably stay at the end (useful in some cases).
-
-        // This is called before the book is generated
-        // Init plugin and read config
         "init": function() {
             if (!Object.keys(this.book.config.get('pluginsConfig.wavedrom', {})).length) {
                 this.book.config.set('pluginsConfig.wavedrom', {});
             }
         },
-
-        // Before the end of book generation
-        "finish:before": function() {
-        },
-
-        // Before parsing markdown
+        "finish:before": function() {},
         "page:before": function(page) {
-            // Get all code texts
-            flows = page.content.match(/```(\x20|\t)*(wavedrom)((.*[\r\n]+)+?)?```/igm);
-            // Begin replace
-            if (flows instanceof Array) {
-                for (var i = 0, len = flows.length; i < len; i++) {
+            const flows = page.content.match(/```(\x20|\t)*(wavedrom)((.*[\r\n]+)+?)?```/igm);
+            if (Array.isArray(flows)) {
+                for (let i = 0, len = flows.length; i < len; i++) {
                     page.content = page.content.replace(
                         flows[i],
                         flows[i]
-                        .replace(/```(\x20|\t)*(wavedrom)[ \t]+{(.*)}/i,
-                            function(matchedStr) {
-                                if (!matchedStr)
-                                    return "";
-                                var newStr = "";
-                                var modeQuote = false;
-                                var modeArray = false;
-                                var modeChar = false;
-                                var modeEqual = false;
-                                // Trim left and right space
-                                var str = matchedStr.replace(/^\s+|\s+$/g,"");
-                                // Remove ```wavedrom header
+                            .replace(/```(\x20|\t)*(wavedrom)[ \t]+{(.*)}/i, function(matchedStr) {
+                                if (!matchedStr) return "";
+                                let newStr = "";
+                                let modeQuote = false;
+                                let modeArray = false;
+                                let modeChar = false;
+                                let modeEqual = false;
+                                let str = matchedStr.replace(/^\s+|\s+$/g, "");
                                 str = str.replace(/```(\x20|\t)*(wavedrom)/i, "");
 
-                                // Build new str
-                                for(var i = 0; i < str.length; i++){
-                                    if (str.charAt(i) == "\"") {
+                                for (let i = 0; i < str.length; i++) {
+                                    if (str.charAt(i) === "\"") {
                                         modeQuote = !modeQuote;
                                         modeChar = true;
                                         newStr += str.charAt(i);
                                         continue;
                                     }
-                                    if (str.charAt(i) == "[") {
+                                    if (str.charAt(i) === "[") {
                                         modeArray = true;
                                         newStr += str.charAt(i);
                                         continue;
                                     }
-                                    if (str.charAt(i) == "]") {
+                                    if (str.charAt(i) === "]") {
                                         modeArray = false;
                                         newStr += str.charAt(i);
                                         continue;
                                     }
                                     if (modeQuote || modeArray) {
-                                        // In quote, keep all string
                                         newStr += str.charAt(i);
                                     } else {
-                                        // Out of quote, process it
                                         if (str.charAt(i).match(/[A-Za-z0-9_]/)) {
                                             modeChar = true;
                                             newStr += str.charAt(i);
@@ -139,12 +116,11 @@ module.exports = {
                                     }
                                 }
 
-                                newStr = newStr.replace(/,$/,"");
-
-                                return "{% wavedrom " + newStr + " %}";
+                                newStr = newStr.replace(/,$/, "");
+                                return `{% wavedrom ${newStr} %}`;
                             })
-                        .replace(/```(\x20|\t)*(wavedrom)/i, '{% wavedrom %}')
-                        .replace(/```/, '{% endwavedrom %}')
+                            .replace(/```(\x20|\t)*(wavedrom)/i, '{% wavedrom %}')
+                            .replace(/```/, '{% endwavedrom %}')
                     );
                 }
             }
