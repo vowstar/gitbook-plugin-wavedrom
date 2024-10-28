@@ -5,9 +5,6 @@
     <script src="assets/skins/default.js" type="text/javascript"></script>
     <script src="assets/wavedrom.min.js" type="text/javascript"></script>
     <script>
-      function sleep(time){
-        return new Promise((resolve) => setTimeout(resolve, time));
-      }
       async function render(code, config, width, height) {
         var canvas = document.getElementsByClassName("wave")[0];
 
@@ -33,7 +30,6 @@
             console.error("Failed to render chart");
             return '<svg version="1.1" width="600" height="200" xmlns="http://www.w3.org/2000/svg"><text x="10" y="100" font-size="60" text-anchor="left">Rendering timed out, please check your input.</text></svg>';
           }
-          await sleep(100);
         }
 
         var svg = document.getElementsByTagName("svg")[0];

@@ -1,10 +1,11 @@
 /*jshint esversion: 8 */
 
-var path = require('path');
-var tester = require('honkit-tester');
-var assert = require('assert');
+const path = require('path');
+const tester = require('honkit-tester');
+const assert = require('assert');
+const isSvg = require('is-svg');
 
-var pkg = require('../package.json');
+const pkg = require('../package.json');
 
 describe('wavedrom', function() {
     this.timeout(50000);
@@ -18,7 +19,6 @@ describe('wavedrom', function() {
             })
             .create()
             .then(function(result) {
-                const isSvg = require('is-svg');
                 const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
 
                 assert.equal(isSvg(svg), true);
@@ -36,7 +36,6 @@ describe('wavedrom', function() {
             })
             .create()
             .then(function(result) {
-                const isSvg = require('is-svg');
                 const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
 
                 assert.equal(isSvg(svg), true);
@@ -54,7 +53,6 @@ describe('wavedrom', function() {
             })
             .create()
             .then(function(result) {
-                const isSvg = require('is-svg');
                 const svg = result[0].content.match(/<svg[^]*<\/svg>/m).toString();
 
                 assert.equal(isSvg(svg), true);

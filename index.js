@@ -25,7 +25,7 @@ async function processBlock(blk) {
             const page = await browser.newPage();
 
             const htmlFile = path.join(__dirname, 'renderer.html');
-            await page.goto("file://" + htmlFile, { waitUntil: 'networkidle2' });
+            await page.goto("file://" + htmlFile, { waitUntil: 'domcontentloaded' });
 
             const xCode = encodeURIComponent(code);
             const xConfig = encodeURIComponent(JSON.stringify(config));
@@ -39,10 +39,20 @@ async function processBlock(blk) {
                     const config = JSON.parse(decodeURIComponent("${xConfig}"));
                     const width = decodeURIComponent("${xWidth}");
                     const height = decodeURIComponent("${xHeight}");
-                    return await render(code, config, width, height);
+                    // return await render(code, config, width, height);
+                    // Set up a flag to detect when render is complete
+                    window.renderComplete = false;
+                    const rendered = await render(code, config, width, height);
+                    window.renderComplete = true;  // Flag to indicate completion
+
+                    return rendered;
                 })()`
             );
 
+            // Poll for render completion
+            await page.waitForFunction('window.renderComplete === true', {
+                timeout: 50000
+            });
             await browser.close();
             resolve(result);
         } catch (error) {
